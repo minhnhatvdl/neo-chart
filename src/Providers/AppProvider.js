@@ -3,7 +3,9 @@ import AppContext from "../Contexts/AppContext";
 import json from "../data.json";
 
 const AppProvider = ({ ...props }) => {
+  // data
   const [data, setData] = useState([]);
+  // get data from api
   useEffect(() => {
     let newData = json.near_earth_objects.map(
       ({
@@ -13,6 +15,7 @@ const AppProvider = ({ ...props }) => {
         }
       }) => [name, estimated_diameter_min, estimated_diameter_max]
     );
+    // add header of data
     newData = [
       [
         "NEO Name",
