@@ -1,13 +1,26 @@
 import React, { useState, useEffect } from "react";
+import Error from "../Components/Error/Error";
+// context
 import AppContext from "../Contexts/AppContext";
-import json from "../data.json";
+// hook
+import { useFetch } from "../Hooks/useFetch";
+// api
+import { api } from "../APIs/api";
 
 const AppProvider = ({ ...props }) => {
   // data
   const [data, setData] = useState([]);
+  // error
+  const [error, setError] = useState(false);
+  // get data raw
+  const [dataRaw] = useFetch(
+    api,
+    { near_earth_objects: [] },
+    setError
+  );
   // get data from api
   useEffect(() => {
-    let newData = json.near_earth_objects.map(
+    let newData = dataRaw.near_earth_objects.map(
       ({
         name,
         estimated_diameter: {
@@ -25,9 +38,10 @@ const AppProvider = ({ ...props }) => {
       ...newData
     ];
     setData(newData);
-  }, []);
+  }, [dataRaw]);
   return (
-    <AppContext.Provider value={{ data, setData }}>
+    <AppContext.Provider value={{ data, setData, error }}>
+      {error && <Error />}
       {props.children}
     </AppContext.Provider>
   );
