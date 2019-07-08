@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
+import Loading from "../Components/Loading/Loading";
 import Error from "../Components/Error/Error";
 // context
 import AppContext from "../Contexts/AppContext";
@@ -10,12 +11,15 @@ import { api } from "../APIs/api";
 const AppProvider = ({ ...props }) => {
   // data
   const [data, setData] = useState([]);
+  // loading
+  const [loading, setLoading] = useState(false);
   // error
   const [error, setError] = useState(false);
   // get data raw
   const [dataRaw] = useFetch(
     api,
     { near_earth_objects: [] },
+    setLoading,
     setError
   );
   // get data from api
@@ -40,10 +44,15 @@ const AppProvider = ({ ...props }) => {
     setData(newData);
   }, [dataRaw]);
   return (
-    <AppContext.Provider value={{ data, setData, error }}>
+    <Fragment>
       {error && <Error />}
-      {props.children}
-    </AppContext.Provider>
+      {loading && <Loading />}
+      {!error && !loading && (
+        <AppContext.Provider value={{ data, dataRaw, setData, error }}>
+          {props.children}
+        </AppContext.Provider>
+      )}
+    </Fragment>
   );
 };
 

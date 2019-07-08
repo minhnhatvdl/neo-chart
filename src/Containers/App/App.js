@@ -1,16 +1,14 @@
 import React from "react";
-import BarChart from "../../Components/BarChart/BarChart";
+import DropdownContainer from "../DropdownContainer/DropdownContainer";
+import BarChartContainer from "../BarChartContainer/BarChartContainer";
 // provider
 import AppProvider from "../../Providers/AppProvider";
-// HOCs
-import { withData } from "../../HOCs/withData";
-import { withOptions } from "../../HOCs/withOptions";
 
 const App = () => {
-  const BarChartWithDataOptions = withOptions(withData(BarChart));
   return (
     <AppProvider>
-      <BarChartWithDataOptions />
+      <DropdownContainer />
+      <BarChartContainer />
     </AppProvider>
   );
 };
