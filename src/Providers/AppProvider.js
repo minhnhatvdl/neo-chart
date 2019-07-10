@@ -11,17 +11,10 @@ import { api } from "../APIs/api";
 const AppProvider = ({ ...props }) => {
   // data
   const [data, setData] = useState([]);
-  // loading
-  const [loading, setLoading] = useState(false);
-  // error
-  const [error, setError] = useState(false);
   // get data raw
-  const [dataRaw] = useFetch(
-    api,
-    { near_earth_objects: [] },
-    setLoading,
-    setError
-  );
+  const [dataRaw, error, loading] = useFetch(api, {
+    near_earth_objects: []
+  });
   // get data from api
   useEffect(() => {
     let newData = dataRaw.near_earth_objects.map(
@@ -47,8 +40,8 @@ const AppProvider = ({ ...props }) => {
     <Fragment>
       {error && <Error />}
       {loading && <Loading />}
-      {!error && !loading && (
-        <AppContext.Provider value={{ data, dataRaw, setData, error }}>
+      {!error && (
+        <AppContext.Provider value={{ data, dataRaw, setData }}>
           {props.children}
         </AppContext.Provider>
       )}

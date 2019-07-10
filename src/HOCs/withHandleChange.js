@@ -14,8 +14,8 @@ export const withHandleChange = WrappedComponent => ({ ...props }) => {
           ({ close_approach_data }) =>
             close_approach_data.length > 0 &&
             close_approach_data
-              .map(e => e.orbiting_body)
-              .includes(value[0].name)
+              .map(e => e.orbiting_body.trim().toLowerCase())
+              .includes(value[0].slug)
         )
         .map(
           ({
@@ -36,9 +36,13 @@ export const withHandleChange = WrappedComponent => ({ ...props }) => {
         }) => [name, estimated_diameter_min, estimated_diameter_max]
       );
     }
-    // add header of data
-    newData = [...newData, ...dataFilter];
-    setData(newData);
+    // if we have results
+    if (dataFilter.length > 0) {
+      newData = [...newData, ...dataFilter];
+      setData(newData);
+    } else {
+      if (value.length > 0) alert("No NEOs found!");
+    }
   };
   return <WrappedComponent {...props} onChange={handleChange} />;
 };

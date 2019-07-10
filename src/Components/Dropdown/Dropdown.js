@@ -12,7 +12,7 @@ const Dropdown = ({ field, placeholder, options, onChange }) => (
     placeholder={placeholder}
     options={options}
     onChange={onChange}
-    style={{ maxWidth: "300px", margin: "20px auto" }}
+    style={{ width: "300px" }}
   />
 );
 
